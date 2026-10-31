@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://aroranitant1989.github.io/taaru_deployment/sitemap.xml
+
+Sitemap: https://taaruinsights.com/sitemap.xml
