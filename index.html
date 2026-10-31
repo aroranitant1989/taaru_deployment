@@ -3275,8 +3275,8 @@
                   <input type="email" class="form-input" name="Email" placeholder="j.anderson@firm.com" required="" data-testid="form-email">
                 </div>
                 <div>
-                  <label class="text-white/35 text-xs uppercase tracking-wider font-sans block mb-2">Organization</label>
-                  <input type="text" class="form-input" name="Organization" placeholder="Apex Capital Partners" required data-testid="form-organization">
+                  <label class="text-white/35 text-xs uppercase tracking-wider font-sans block mb-2">Organisation</label>
+                  <input type="text" class="form-input" name="Organisation" placeholder="Apex Capital Partners" required data-testid="form-organization">
                 </div>
               </div>
               <div class="mb-4">
@@ -3571,16 +3571,6 @@
       const submitBtn = form.querySelector('[data-testid=\"form-submit-button\"]');
       const successMsg = document.getElementById('form-success-msg');
 
-      const data = {
-        Timestamp:       new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
-        FirstName:       form.querySelector('[name=\"FirstName\"]').value.trim(),
-        LastName:        form.querySelector('[name=\"LastName\"]').value.trim(),
-        Email:           form.querySelector('[name=\"Email\"]').value.trim(),
-        Organization:    form.querySelector('[name=\"Organization\"]').value.trim(),
-        ServiceInterest: form.querySelector('[name=\"ServiceInterest\"]').value.trim(),
-        Message:         form.querySelector('[name=\"Message\"]').value.trim(),
-      };
-
       if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL === '__GOOGLE_SCRIPT_URL__') {
         console.warn('Google Sheets URL not configured — showing success UI only.');
         form.style.display = 'none';
@@ -3591,30 +3581,31 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
 
-const params = new URLSearchParams();
-params.append('FirstName',       form.querySelector('[name=\"FirstName\"]').value.trim());
-params.append('LastName',        form.querySelector('[name=\"LastName\"]').value.trim());
-params.append('Email',           form.querySelector('[name=\"Email\"]').value.trim());
-params.append('Organization',    form.querySelector('[name=\"Organization\"]').value.trim());
-params.append('ServiceInterest', form.querySelector('[name=\"ServiceInterest\"]').value.trim());
-params.append('Message',         form.querySelector('[name=\"Message\"]').value.trim());
+      const params = new URLSearchParams({
+        FirstName:       form.querySelector('[name=\"FirstName\"]').value.trim(),
+        LastName:        form.querySelector('[name=\"LastName\"]').value.trim(),
+        Email:           form.querySelector('[name=\"Email\"]').value.trim(),
+        Organisation:    form.querySelector('[name=\"Organisation\"]').value.trim(),
+        ServiceInterest: form.querySelector('[name=\"ServiceInterest\"]').value.trim(),
+        Message:         form.querySelector('[name=\"Message\"]').value.trim(),
+      });
 
-fetch(GOOGLE_SCRIPT_URL, {
-  method: 'POST',
-  mode: 'no-cors',
-  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  body: params.toString()
-})
-.then(() => {
-  form.style.display = 'none';
-  successMsg.classList.add('show');
-})
-.catch((err) => {
-  console.error('Submission error:', err);
-  submitBtn.disabled = false;
-  submitBtn.textContent = 'Send Inquiry';
-  alert('Submission failed. Please try again.');
-});
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      })
+      .then(() => {
+        form.style.display = 'none';
+        successMsg.classList.add('show');
+      })
+      .catch((err) => {
+        console.error('Submission error:', err);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Inquiry';
+        alert('Submission failed. Please try again.');
+      });
     }
 
     (function updateClocks() {
